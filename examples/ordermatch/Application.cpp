@@ -34,7 +34,6 @@ void Application::onLogout( const FIX::SessionID& sessionID ) {}
 
 void Application::fromApp( const FIX::Message& message,
                            const FIX::SessionID& sessionID )
-EXCEPT( FIX::FieldNotFound, FIX::IncorrectDataFormat, FIX::IncorrectTagValue, FIX::UnsupportedMessageType )
 {
   crack( message, sessionID );
 }
@@ -106,7 +105,7 @@ void Application::onMessage( const FIX42::MarketDataRequest& message, const FIX:
   message.get( mdReqID );
   message.get( subscriptionRequestType );
   if ( subscriptionRequestType != FIX::SubscriptionRequestType_SNAPSHOT )
-    EXCEPT( FIX::IncorrectTagValue( subscriptionRequestType.getField() ) );
+    throw FIX::IncorrectTagValue( subscriptionRequestType.getField() );
   message.get( marketDepth );
   message.get( noRelatedSym );
 

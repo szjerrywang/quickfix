@@ -323,7 +323,7 @@ bool ThreadedSSLSocketConnection::read()
   }
 }
 
-bool ThreadedSSLSocketConnection::readMessage(std::string &msg) EXCEPT (SocketRecvFailed)
+bool ThreadedSSLSocketConnection::readMessage(std::string &msg)
 {
   try
   {

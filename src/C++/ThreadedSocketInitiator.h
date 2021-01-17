@@ -39,11 +39,13 @@ namespace FIX
 class ThreadedSocketInitiator : public Initiator
 {
 public:
+  /// @throws ConfigError
   ThreadedSocketInitiator( Application&, MessageStoreFactory&,
-                           const SessionSettings& ) EXCEPT ( ConfigError );
+                           const SessionSettings& );
+  /// @throws ConfigError
   ThreadedSocketInitiator( Application&, MessageStoreFactory&,
                            const SessionSettings&,
-                           LogFactory& ) EXCEPT ( ConfigError );
+                           LogFactory& );
 
   virtual ~ThreadedSocketInitiator();
 
@@ -52,8 +54,10 @@ private:
   typedef std::map < SessionID, int > SessionToHostNum;
   typedef std::pair < ThreadedSocketInitiator*, ThreadedSocketConnection* > ThreadPair;
 
-  void onConfigure( const SessionSettings& ) EXCEPT ( ConfigError );
-  void onInitialize( const SessionSettings& ) EXCEPT ( RuntimeError );
+  /// @throws ConfigError
+  void onConfigure( const SessionSettings& );
+  /// @throws RuntimeError
+  void onInitialize( const SessionSettings& );
 
   void onStart();
   bool onPoll( double timeout );

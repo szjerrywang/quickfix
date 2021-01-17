@@ -37,10 +37,12 @@ class SocketAcceptor : public Acceptor, SocketServer::Strategy
 {
   friend class SocketConnection;
 public:
+  /// @throws ConfigError
   SocketAcceptor( Application&, MessageStoreFactory&,
-                  const SessionSettings& ) EXCEPT ( ConfigError );
+                  const SessionSettings& );
+  /// @throws ConfigError
   SocketAcceptor( Application&, MessageStoreFactory&,
-                  const SessionSettings&, LogFactory& ) EXCEPT ( ConfigError );
+                  const SessionSettings&, LogFactory& );
 
   virtual ~SocketAcceptor();
 
@@ -51,8 +53,10 @@ private:
   typedef std::map < int, Sessions > PortToSessions;
   typedef std::map < socket_handle, SocketConnection* > SocketConnections;
 
-  void onConfigure( const SessionSettings& ) EXCEPT ( ConfigError );
-  void onInitialize( const SessionSettings& ) EXCEPT ( RuntimeError );
+  /// @throws ConfigError
+  void onConfigure( const SessionSettings& );
+  /// @throws RuntimeError
+  void onInitialize( const SessionSettings& );
 
   void onStart();
   bool onPoll( double timeout );

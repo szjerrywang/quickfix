@@ -63,13 +63,17 @@ public:
   bool sentLogout() { return m_state.sentLogout(); }
   bool receivedLogon() { return m_state.receivedLogon(); }
   bool isLoggedOn() { return receivedLogon() && sentLogon(); }
-  void reset() EXCEPT ( IOException ) 
+  /// @throws IOException
+  void reset()
   { generateLogout(); disconnect(); m_state.reset(); }
-  void refresh() EXCEPT ( IOException )
+  /// @throws IOException
+  void refresh()
   { m_state.refresh(); }
-  void setNextSenderMsgSeqNum( int num ) EXCEPT ( IOException )
+  /// @throws IOException
+  void setNextSenderMsgSeqNum( int num )
   { m_state.setNextSenderMsgSeqNum( num ); }
-  void setNextTargetMsgSeqNum( int num ) EXCEPT ( IOException )
+  /// @throws IOException
+  void setNextTargetMsgSeqNum( int num )
   { m_state.setNextTargetMsgSeqNum( num ); }
 
   const SessionID& getSessionID() const
@@ -79,21 +83,21 @@ public:
   const DataDictionaryProvider& getDataDictionaryProvider() const
   { return m_dataDictionaryProvider; }
 
+  /// @throws SessionNotFound
   static bool sendToTarget( Message& message,
-                            const std::string& qualifier = "" )
-  EXCEPT ( SessionNotFound );
-  static bool sendToTarget( Message& message, const SessionID& sessionID )
-  EXCEPT ( SessionNotFound );
+                            const std::string& qualifier = "" );
+  /// @throws SessionNotFound
+  static bool sendToTarget( Message& message, const SessionID& sessionID );
+  /// @throws SessionNotFound
   static bool sendToTarget( Message&,
                             const SenderCompID& senderCompID,
                             const TargetCompID& targetCompID,
-                            const std::string& qualifier = "" )
-  EXCEPT ( SessionNotFound );
+                            const std::string& qualifier = "" );
+  /// @throws SessionNotFound
   static bool sendToTarget( Message& message,
                             const std::string& senderCompID,
                             const std::string& targetCompID,
-                            const std::string& qualifier = "" )
-  EXCEPT ( SessionNotFound );
+                            const std::string& qualifier = "" );
 
   static std::set<SessionID> getSessions();
   static bool doesSessionExist( const SessionID& );
@@ -237,7 +241,8 @@ private:
   bool send( const std::string& );
   bool sendRaw( Message&, int msgSeqNum = 0 );
   bool resend( Message& message );
-  void persist( const Message&, const std::string& ) EXCEPT ( IOException );
+  /// @throws IOException
+  void persist( const Message&, const std::string& );
 
   void insertSendingTime( Header& );
   void insertOrigSendingTime( Header&,

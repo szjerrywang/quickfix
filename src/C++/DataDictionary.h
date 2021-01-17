@@ -112,18 +112,26 @@ class DataDictionary
 public:
   DataDictionary();
   DataDictionary( const DataDictionary& copy );
-  DataDictionary(std::istream& stream , bool preserveMsgFldsOrder = false) EXCEPT ( ConfigError );
-  DataDictionary(const std::string& url , bool preserveMsgFldsOrder = false) EXCEPT ( ConfigError );
+  /// @throws ConfigError
+  DataDictionary(std::istream& stream , bool preserveMsgFldsOrder = false);
+  /// @throws ConfigError
+  DataDictionary(const std::string& url , bool preserveMsgFldsOrder = false);
   virtual ~DataDictionary();
 
-  void readFromURL( const std::string& url ) EXCEPT ( ConfigError );
-  void readFromDocument( const DOMDocumentPtr &pDoc ) EXCEPT ( ConfigError );
-  void readFromStream( std::istream& stream ) EXCEPT ( ConfigError );
+  /// @throws ConfigError
+  void readFromURL( const std::string& url );
+  /// @throws ConfigError
+  void readFromDocument( const DOMDocumentPtr &pDoc );
+  /// @throws ConfigError
+  void readFromStream( std::istream& stream );
 
   message_order const& getOrderedFields() const;
-  message_order const& getHeaderOrderedFields() const EXCEPT ( ConfigError );
-  message_order const& getTrailerOrderedFields() const EXCEPT ( ConfigError );
-  message_order const& getMessageOrderedFields(const std::string & msgType) const EXCEPT ( ConfigError );
+  /// @throws ConfigError
+  message_order const& getHeaderOrderedFields() const;
+  /// @throws ConfigError
+  message_order const& getTrailerOrderedFields() const;
+  /// @throws ConfigError
+  message_order const& getMessageOrderedFields(const std::string & msgType) const;
 
   // storage functions
   void setVersion( const std::string& beginString )
@@ -377,14 +385,20 @@ public:
   bool isMessageFieldsOrderPreserved() const
   { return m_storeMsgFieldsOrder; }
 
-  /// Validate a message.
+  /**
+   * Validate a message.
+   *
+   * @throws FIX::Exception
+   */
   static void validate( const Message& message,
                         const DataDictionary* const pSessionDD,
-                        const DataDictionary* const pAppID ) EXCEPT ( FIX::Exception );
+                        const DataDictionary* const pAppID );
 
-  void validate( const Message& message ) const EXCEPT ( FIX::Exception )
+  /// @throws FIX::Exception
+  void validate( const Message& message ) const
   { validate( message, false ); }
-  void validate( const Message& message, bool bodyOnly ) const EXCEPT ( FIX::Exception )
+  /// @throws FIX::Exception
+  void validate( const Message& message, bool bodyOnly ) const
   { validate( message, bodyOnly ? (DataDictionary*)0 : this, this ); }
 
   DataDictionary& operator=( const DataDictionary& rhs );
@@ -411,16 +425,19 @@ private:
       return true;
   }
 
-  /// Check if field tag number is defined in spec.
+  /**
+   * Check if field tag number is defined in spec.
+   *
+   * @throws InvalidTagNumber
+   */
   void checkValidTagNumber( const FieldBase& field ) const
-  EXCEPT ( InvalidTagNumber )
   {
     if( m_fields.find( field.getTag() ) == m_fields.end() )
       throw InvalidTagNumber( field.getTag() );
   }
 
+  /// @throws IncorrectDataFormat
   void checkValidFormat( const FieldBase& field ) const
-  EXCEPT ( IncorrectDataFormat )
   {
     try
     {
@@ -495,8 +512,8 @@ private:
     { throw IncorrectDataFormat( field.getTag(), field.getString() ); }
   }
 
+  /// @throws IncorrectRagValue
   void checkValue( const FieldBase& field ) const
-  EXCEPT ( IncorrectTagValue )
   {
     if ( !hasFieldValue( field.getTag() ) ) return ;
 
@@ -505,27 +522,36 @@ private:
       throw IncorrectTagValue( field.getTag() );
   }
 
-  /// Check if a field has a value.
+  /**
+   * Check if a field has a value.
+   *
+   * @throws NoTagValue
+   */
   void checkHasValue( const FieldBase& field ) const
-  EXCEPT ( NoTagValue )
   {
     if ( m_checkFieldsHaveValues && !field.getString().length() )
       throw NoTagValue( field.getTag() );
   }
 
-  /// Check if a field is in this message type.
+  /**
+   * Check if a field is in this message type.
+   *
+   * @throws TagNotDefinedForMessage
+   */
   void checkIsInMessage
   ( const FieldBase& field, const MsgType& msgType ) const
-  EXCEPT ( TagNotDefinedForMessage )
   {
     if ( !isMsgField( msgType, field.getTag() ) )
       throw TagNotDefinedForMessage( field.getTag() );
   }
 
-  /// Check if group count matches number of groups in
+  /**
+   * Check if group count matches number of groups in
+   *
+   * @throws RepeatingGroupCountMismatch
+   */
   void checkGroupCount
   ( const FieldBase& field, const FieldMap& fieldMap, const MsgType& msgType ) const
-  EXCEPT ( RepeatingGroupCountMismatch )
   {
     int fieldNum = field.getTag();
     if( isGroup(msgType, fieldNum) )
@@ -536,11 +562,14 @@ private:
     }
   }
 
-  /// Check if a message has all required fields.
+  /**
+   * Check if a message has all required fields.
+   *
+   * @throws RequiredTagMissing
+   */
   void checkHasRequired
   ( const FieldMap& header, const FieldMap& body, const FieldMap& trailer,
     const MsgType& msgType ) const
-  EXCEPT ( RequiredTagMissing )
   {
     NonBodyFields::const_iterator iNBF;
     for( iNBF = m_headerFields.begin(); iNBF != m_headerFields.end(); ++iNBF )

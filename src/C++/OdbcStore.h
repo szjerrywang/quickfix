@@ -85,20 +85,31 @@ public:
              const std::string& connectionString );
   ~OdbcStore();
 
-  bool set( int, const std::string& ) EXCEPT ( IOException );
-  void get( int, int, std::vector < std::string > & ) const EXCEPT ( IOException );
+  /// @throws IOException
+  bool set( int, const std::string& );
+  /// @throws IOException
+  void get( int, int, std::vector < std::string > & ) const;
 
-  int getNextSenderMsgSeqNum() const EXCEPT ( IOException );
-  int getNextTargetMsgSeqNum() const EXCEPT ( IOException );
-  void setNextSenderMsgSeqNum( int value ) EXCEPT ( IOException );
-  void setNextTargetMsgSeqNum( int value ) EXCEPT ( IOException );
-  void incrNextSenderMsgSeqNum() EXCEPT ( IOException );
-  void incrNextTargetMsgSeqNum() EXCEPT ( IOException );
+  /// @throws IOException
+  int getNextSenderMsgSeqNum() const;
+  /// @throws IOException
+  int getNextTargetMsgSeqNum() const;
+  /// @throws IOException
+  void setNextSenderMsgSeqNum( int value );
+  /// @throws IOException
+  void setNextTargetMsgSeqNum( int value );
+  /// @throws IOException
+  void incrNextSenderMsgSeqNum();
+  /// @throws IOException
+  void incrNextTargetMsgSeqNum();
 
-  UtcTimeStamp getCreationTime() const EXCEPT ( IOException );
+  /// @throws IOException
+  UtcTimeStamp getCreationTime() const;
 
-  void reset() EXCEPT ( IOException );
-  void refresh() EXCEPT ( IOException );
+  /// @throws IOException
+  void reset();
+  /// @throws IOException
+  void refresh();
 
 private:
   void populateCache();

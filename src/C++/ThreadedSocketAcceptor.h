@@ -37,11 +37,13 @@ class ThreadedSocketAcceptor : public Acceptor
 {
   friend class SocketConnection;
 public:
+  /// @throws ConfigError
   ThreadedSocketAcceptor( Application&, MessageStoreFactory&,
-                          const SessionSettings& ) EXCEPT ( ConfigError );
+                          const SessionSettings& );
+  /// @throws ConfigError
   ThreadedSocketAcceptor( Application&, MessageStoreFactory&,
                           const SessionSettings&,
-                          LogFactory& ) EXCEPT ( ConfigError );
+                          LogFactory& );
 
   virtual ~ThreadedSocketAcceptor();
 
@@ -74,8 +76,10 @@ private:
   typedef std::map < socket_handle, int > SocketToPort;
   typedef std::map < socket_handle, thread_id > SocketToThread;
 
-  void onConfigure( const SessionSettings& ) EXCEPT ( ConfigError );
-  void onInitialize( const SessionSettings& ) EXCEPT ( RuntimeError );
+  /// @throws ConfigError
+  void onConfigure( const SessionSettings& );
+  /// @throws RuntimeError
+  void onInitialize( const SessionSettings& );
 
   void onStart();
   bool onPoll( double timeout );

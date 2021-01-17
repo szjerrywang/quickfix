@@ -169,28 +169,38 @@ public:
   void clearQueue()
   { Locker l( m_mutex ); m_queue.clear(); }
 
-  bool set( int s, const std::string& m ) EXCEPT ( IOException )
+  /// @throws IOException
+  bool set( int s, const std::string& m )
   { Locker l( m_mutex ); return m_pStore->set( s, m ); }
+  /// @throws IOException
   void get( int b, int e, std::vector < std::string > &m ) const
-  EXCEPT ( IOException )
   { Locker l( m_mutex ); m_pStore->get( b, e, m ); }
-  int getNextSenderMsgSeqNum() const EXCEPT ( IOException )
+  /// @throws IOException
+  int getNextSenderMsgSeqNum() const
   { Locker l( m_mutex ); return m_pStore->getNextSenderMsgSeqNum(); }
-  int getNextTargetMsgSeqNum() const EXCEPT ( IOException )
+  /// @throws IOException
+  int getNextTargetMsgSeqNum() const
   { Locker l( m_mutex ); return m_pStore->getNextTargetMsgSeqNum(); }
-  void setNextSenderMsgSeqNum( int n ) EXCEPT ( IOException )
+  /// @throws IOException
+  void setNextSenderMsgSeqNum( int n )
   { Locker l( m_mutex ); m_pStore->setNextSenderMsgSeqNum( n ); }
-  void setNextTargetMsgSeqNum( int n ) EXCEPT ( IOException )
+  /// @throws IOException
+  void setNextTargetMsgSeqNum( int n )
   { Locker l( m_mutex ); m_pStore->setNextTargetMsgSeqNum( n ); }
-  void incrNextSenderMsgSeqNum() EXCEPT ( IOException )
+  /// @throws IOException
+  void incrNextSenderMsgSeqNum()
   { Locker l( m_mutex ); m_pStore->incrNextSenderMsgSeqNum(); }
-  void incrNextTargetMsgSeqNum() EXCEPT ( IOException )
+  /// @throws IOException
+  void incrNextTargetMsgSeqNum()
   { Locker l( m_mutex ); m_pStore->incrNextTargetMsgSeqNum(); }
-  UtcTimeStamp getCreationTime() const EXCEPT ( IOException )
+  /// @throws IOException
+  UtcTimeStamp getCreationTime() const
   { Locker l( m_mutex ); return m_pStore->getCreationTime(); }
-  void reset() EXCEPT ( IOException )
+  /// @throws IOException
+  void reset()
   { Locker l( m_mutex ); m_pStore->reset(); }
-  void refresh() EXCEPT ( IOException )
+  /// @throws IOException
+  void refresh()
   { Locker l( m_mutex ); m_pStore->refresh(); }
 
   void clear()

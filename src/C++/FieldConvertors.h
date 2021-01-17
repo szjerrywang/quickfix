@@ -208,8 +208,8 @@ struct IntConvertor
     return convert( value.begin(), value.end(), result );
   }
 
+  /// @throws FieldConvertError
   static signed_int convert( const std::string& value )
-  EXCEPT ( FieldConvertError )
   {
     signed_int result = 0;
     if( !convert( value.begin(), value.end(), result ) )
@@ -222,8 +222,8 @@ struct IntConvertor
 /// Converts checksum to/from a string
 struct CheckSumConvertor
 {
+  /// @throws FieldConvertError
   static std::string convert( int value )
-  EXCEPT ( FieldConvertError )
   {
     if ( value > 255 || value < 0 ) throw FieldConvertError();
     char result[3];
@@ -236,8 +236,8 @@ struct CheckSumConvertor
     return IntConvertor::convert( value, result );
   }
 
+  /// @throws FieldConvertError
   static int convert( const std::string& value )
-  EXCEPT ( FieldConvertError )
   {
     return IntConvertor::convert( value );
   }
@@ -358,8 +358,8 @@ static bool convert( const std::string& value, double& result )
   return true;
 }
 
+  /// @throws FieldConvertError
   static double convert( const std::string& value )
-  EXCEPT ( FieldConvertError )
   {
     double result = 0.0;
     if( !convert( value, result ) )
@@ -385,8 +385,8 @@ struct CharConvertor
     return true;
   }
 
+  /// @throws FieldConvertError
   static char convert( const std::string& value )
-  EXCEPT ( FieldConvertError )
   {
     char result = '\0';
     if( !convert( value, result ) )
@@ -418,8 +418,8 @@ struct BoolConvertor
     return true;
   }
 
+  /// @throws FieldConvertError
   static bool convert( const std::string& value )
-  EXCEPT ( FieldConvertError )
   {
     bool result = false;
     if( !convert( value, result ) )
@@ -432,9 +432,9 @@ struct BoolConvertor
 /// Converts a UtcTimeStamp to/from a string
 struct UtcTimeStampConvertor
 {
+  /// @throws FieldConvertError
   static std::string convert( const UtcTimeStamp& value,
                               int precision = 0 )
-  EXCEPT ( FieldConvertError )
   {
     char result[ 17+10 ]; // Maximum
     int year, month, day, hour, minute, second, fraction;
@@ -463,8 +463,8 @@ struct UtcTimeStampConvertor
     return std::string(result, precision ? (17 + 1 + precision) : 17);
   }
 
+  /// @throws FieldConvertError
   static UtcTimeStamp convert( const std::string& value )
-  EXCEPT ( FieldConvertError )
   {
     size_t len = value.size();
     if (len < 17 || len > 27) throw FieldConvertError(value);
@@ -544,9 +544,9 @@ struct UtcTimeStampConvertor
 /// Converts a UtcTimeOnly to/from a string
 struct UtcTimeOnlyConvertor
 {
+  /// @throws FieldConvertError
   static std::string convert( const UtcTimeOnly& value,
                               int precision = 0 )
-  EXCEPT ( FieldConvertError )
   {
     char result[ 8+10 ]; // Maximum
     int hour, minute, second, fraction;
@@ -570,8 +570,8 @@ struct UtcTimeOnlyConvertor
     return std::string(result, precision ? (8 + 1 + precision) : 8);
   }
 
+  /// @throws FieldConvertError
   static UtcTimeOnly convert( const std::string& value)
-  EXCEPT ( FieldConvertError )
   {
     size_t len = value.size();
     if (len < 8 || len > 18) throw FieldConvertError(value);
@@ -631,8 +631,8 @@ struct UtcTimeOnlyConvertor
 /// Converts a UtcDate to/from a string
 struct UtcDateConvertor
 {
+  /// @throws FieldConvertError
   static std::string convert( const UtcDate& value )
-  EXCEPT ( FieldConvertError )
   {
     int year, month, day;
     value.getYMD( year, month, day );
@@ -646,8 +646,8 @@ struct UtcDateConvertor
     return std::string( result, sizeof( result ) );
   }
 
+  /// @throws FieldConvertError
   static UtcDate convert( const std::string& value )
-  EXCEPT ( FieldConvertError )
   {
     if( value.size() != 8 ) throw FieldConvertError(value);
 

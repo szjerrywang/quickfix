@@ -39,11 +39,11 @@ public:
   Parser() {}
   ~Parser() {}
 
+  /// @throws MessageParseError
   bool extractLength( int& length, std::string::size_type& pos,
-                      const std::string& buffer )
-  EXCEPT ( MessageParseError );
-  bool readFixMessage( std::string& str )
-  EXCEPT ( MessageParseError );
+                      const std::string& buffer );
+  /// @throws MessageParseError
+  bool readFixMessage( std::string& str );
 
   void addToStream( const char* str, size_t len )
   { m_buffer.append( str, len ); }

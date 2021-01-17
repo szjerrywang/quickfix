@@ -71,7 +71,6 @@ SUITE(SocketConnectionTests)
     TestApplication() : m_count(0) {}
 
     void fromApp( const FIX::Message& m, const FIX::SessionID& )
-    EXCEPT( FIX::FieldNotFound, FIX::IncorrectDataFormat, FIX::IncorrectTagValue, FIX::UnsupportedMessageType )
     {
       m_count++;
     }

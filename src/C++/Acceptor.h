@@ -49,10 +49,16 @@ class Session;
 class Acceptor
 {
 public:
+  /**
+   * @throws ConfigError
+   */
   Acceptor( Application&, MessageStoreFactory&,
-            const SessionSettings& ) EXCEPT ( ConfigError );
+            const SessionSettings& );
+  /**
+   * @throws ConfigError
+   */
   Acceptor( Application&, MessageStoreFactory&,
-            const SessionSettings&, LogFactory& ) EXCEPT ( ConfigError );
+            const SessionSettings&, LogFactory& );
 
   virtual ~Acceptor();
 
@@ -62,12 +68,27 @@ public:
     return &m_nullLog;
   }
 
-  /// Start acceptor.
-  void start() EXCEPT ( ConfigError, RuntimeError );
-  /// Block on the acceptor
-  void block() EXCEPT ( ConfigError, RuntimeError );
-  /// Poll the acceptor
-  bool poll( double timeout = 0.0 ) EXCEPT ( ConfigError, RuntimeError );
+
+  /**
+   * Start acceptor.
+   *
+   * @throws ConfigError, RuntimeError
+   */
+  void start();
+  
+  /**
+   * Block on the acceptor
+   *
+   * @throws ConfigError, RuntimeError
+   */
+  void block();
+
+  /**
+   * Poll the acceptor
+   *
+   * @throws ConfigError, RuntimeError
+   */
+  bool poll( double timeout = 0.0 );
 
   /// Stop acceptor.
   void stop( bool force = false );
@@ -91,12 +112,25 @@ public:
   { return m_messageStoreFactory; }
 
 private:
-  void initialize() EXCEPT ( ConfigError );
+  /**
+   * @throws ConfigError
+   */
+  void initialize();
 
-  /// Implemented to configure acceptor
-  virtual void onConfigure( const SessionSettings& ) EXCEPT ( ConfigError ) {};
-  /// Implemented to initialize acceptor
-  virtual void onInitialize( const SessionSettings& ) EXCEPT ( RuntimeError ) {};
+  /**
+   * Implemented to configure acceptor
+   *
+   * @throws ConfigError
+   */
+  virtual void onConfigure( const SessionSettings& ) {};
+
+  /**
+   * Implemented to initialize acceptor
+   *
+   * @throws RuntimeError
+   */
+  virtual void onInitialize( const SessionSettings& ) {};
+  
   /// Implemented to start listening for connections.
   virtual void onStart() = 0;
   /// Implemented to connect and poll for events.

@@ -112,9 +112,12 @@ public:
 
   FieldMap& operator=( const FieldMap& rhs );
 
-  /// Set a field without type checking
+  /**
+   * Set a field without type checking
+   *
+   * @throws RepeatedTag
+   */
   void setField( const FieldBase& field, bool overwrite = true )
-  EXCEPT ( RepeatedTag )
   {
     if( !overwrite )
     {
@@ -134,9 +137,12 @@ public:
     }
   }
 
-  /// Set a field without a field class
+  /**
+   * Set a field without a field class
+   *
+   * @throws RepeatedTag, NoTagValue
+   */
   void setField( int tag, const std::string& value )
-  EXCEPT ( RepeatedTag, NoTagValue )
   {
     FieldBase fieldBase( tag, value );
     setField( fieldBase );
@@ -152,24 +158,34 @@ public:
     return true;
   }
 
-  /// Get a field without type checking
-  FieldBase& getField( FieldBase& field )
-  const EXCEPT ( FieldNotFound )
+  /**
+   * Get a field without type checking
+   *
+   * throws FieldNotFound
+   */
+  FieldBase& getField( FieldBase& field ) const
   {
     field = getFieldRef( field.getTag() );
     return field;
   }
 
-  /// Get a field without a field class
-  const std::string& getField( int tag )
-  const EXCEPT ( FieldNotFound )
+
+  /**
+   * Get a field without a field class
+   *
+   * @throws FieldNotFound
+   */
+  const std::string& getField( int tag ) const
   {
     return getFieldRef( tag ).getString();
   }
 
-  /// Get direct access to a field through a reference
-  const FieldBase& getFieldRef( int tag )
-  const EXCEPT ( FieldNotFound )
+  /**
+   * Get direct access to a field through a reference
+   *
+   * @throws FieldNotFound
+   */
+  const FieldBase& getFieldRef( int tag ) const
   {
     Fields::const_iterator iter = findTag( tag );
     if ( iter == m_fields.end() )
@@ -177,9 +193,12 @@ public:
     return (*iter);
   }
 
-  /// Get direct access to a field through a pointer
-  const FieldBase* const getFieldPtr( int tag )
-  const EXCEPT ( FieldNotFound )
+  /**
+   * Get direct access to a field through a pointer
+   *
+   * @throws FieldNotFound
+   */
+  const FieldBase* const getFieldPtr( int tag ) const 
   {
     return &getFieldRef( tag );
   }
@@ -203,16 +222,22 @@ public:
   /// Replace a specific instance of a group.
   void replaceGroup( int num, int tag, const FieldMap& group );
 
-  /// Get a specific instance of a group.
+  /**
+   * Get a specific instance of a group.
+   *
+   * @throws FieldNotFound
+   */
   FieldMap& getGroup( int num, int tag, FieldMap& group ) const
-  EXCEPT ( FieldNotFound )
   {
     return group = getGroupRef( num, tag );
   }
 
-  /// Get direct access to a field through a reference
+  /**
+   * Get direct access to a field through a reference
+   *
+   * @throws FieldNotFound
+   */
   FieldMap& getGroupRef( int num, int tag ) const
-  EXCEPT ( FieldNotFound )
   {
     Groups::const_iterator i = m_groups.find( tag );
     if( i == m_groups.end() ) throw FieldNotFound( tag );
@@ -221,9 +246,12 @@ public:
     return *( *(i->second.begin() + (num-1) ) );
   }
 
-  /// Get direct access to a field through a pointer
+  /**
+   * Get direct access to a field through a pointer
+   *
+   * @throws FieldNotFound
+   */
   FieldMap* getGroupPtr( int num, int tag ) const
-  EXCEPT ( FieldNotFound )
   {
     return &getGroupRef( num, tag );
   }

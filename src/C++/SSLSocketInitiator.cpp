@@ -134,10 +134,10 @@ int SSLSocketInitiator::passwordHandleCB(char *buf, int bufsize, int verify, voi
   return initObj->passwordHandleCallback(buf, bufsize, verify, job);
 }
 
-SSLSocketInitiator::SSLSocketInitiator( Application& application,
-                                  MessageStoreFactory& factory,
-                                  const SessionSettings& settings )
-EXCEPT ( ConfigError )
+SSLSocketInitiator::SSLSocketInitiator
+( Application& application,
+  MessageStoreFactory& factory,
+  const SessionSettings& settings )
 : Initiator( application, factory, settings ),
   m_connector( 1 ), m_lastConnect( 0 ),
   m_reconnectInterval( 30 ), m_noDelay( false ), m_sendBufSize( 0 ),
@@ -146,11 +146,11 @@ EXCEPT ( ConfigError )
   initObj = this;
 }
 
-SSLSocketInitiator::SSLSocketInitiator( Application& application,
-                                  MessageStoreFactory& factory,
-                                  const SessionSettings& settings,
-                                  LogFactory& logFactory )
-EXCEPT ( ConfigError )
+SSLSocketInitiator::SSLSocketInitiator
+( Application& application,
+  MessageStoreFactory& factory,
+  const SessionSettings& settings,
+  LogFactory& logFactory )
 : Initiator( application, factory, settings, logFactory ),
   m_connector( 1 ), m_lastConnect( 0 ),
   m_reconnectInterval( 30 ), m_noDelay( false ), m_sendBufSize( 0 ),
@@ -179,7 +179,6 @@ SSLSocketInitiator::~SSLSocketInitiator()
 }
 
 void SSLSocketInitiator::onConfigure( const SessionSettings& s )
-EXCEPT ( ConfigError )
 {
   const Dictionary& dict = s.get();
 
@@ -194,7 +193,6 @@ EXCEPT ( ConfigError )
 }
 
 void SSLSocketInitiator::onInitialize( const SessionSettings& s )
-EXCEPT ( RuntimeError )
 {
   if (m_sslInit)
     return;

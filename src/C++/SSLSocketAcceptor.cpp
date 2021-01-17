@@ -136,9 +136,10 @@ int SSLSocketAcceptor::passPhraseHandleCB(char *buf, int bufsize, int verify, vo
   return acceptObj->passwordHandleCallback(buf, bufsize, verify, job);
 }
 
-SSLSocketAcceptor::SSLSocketAcceptor( Application& application,
-                                MessageStoreFactory& factory,
-                                const SessionSettings& settings ) EXCEPT ( ConfigError )
+SSLSocketAcceptor::SSLSocketAcceptor
+( Application& application,
+  MessageStoreFactory& factory,
+  const SessionSettings& settings )
 : Acceptor( application, factory, settings ),
   m_pServer( 0 ), m_sslInit(false),
   m_verify(SSL_CLIENT_VERIFY_NOTSET), m_ctx(0), m_revocationStore(0)
@@ -146,10 +147,11 @@ SSLSocketAcceptor::SSLSocketAcceptor( Application& application,
   acceptObj = this;
 }
 
-SSLSocketAcceptor::SSLSocketAcceptor( Application& application,
-                                MessageStoreFactory& factory,
-                                const SessionSettings& settings,
-                                LogFactory& logFactory ) EXCEPT ( ConfigError )
+SSLSocketAcceptor::SSLSocketAcceptor
+( Application& application,
+  MessageStoreFactory& factory,
+  const SessionSettings& settings,
+  LogFactory& logFactory )
 : Acceptor( application, factory, settings, logFactory ),
   m_pServer( 0 ), m_sslInit(false),
   m_verify(SSL_CLIENT_VERIFY_NOTSET), m_ctx(0), m_revocationStore(0)
@@ -172,7 +174,6 @@ SSLSocketAcceptor::~SSLSocketAcceptor()
 }
 
 void SSLSocketAcceptor::onConfigure( const SessionSettings& s )
-EXCEPT ( ConfigError )
 {
   std::set<SessionID> sessions = s.getSessions();
   std::set<SessionID>::iterator i;
@@ -188,7 +189,6 @@ EXCEPT ( ConfigError )
 }
 
 void SSLSocketAcceptor::onInitialize( const SessionSettings& s )
-EXCEPT ( RuntimeError )
 {
   if (!m_sslInit)
   {
@@ -396,8 +396,10 @@ void SSLSocketAcceptor::onTimeout( SocketServer& )
     i->second->onTimeout();
 }
 
-int SSLSocketAcceptor::passwordHandleCallback(char *buf, size_t bufsize,
-                                                      int verify, void *job)
+int SSLSocketAcceptor::passwordHandleCallback
+(char *buf,
+ size_t bufsize,
+ int verify, void *job)
 {
   if (m_password.length() > bufsize)
     return -1;

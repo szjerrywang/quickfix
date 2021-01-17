@@ -30,7 +30,6 @@
 namespace FIX
 {
 bool HttpParser::readHttpMessage( std::string& str )
-EXCEPT ( MessageParseError )
 {
   std::string::size_type pos = 0;
 

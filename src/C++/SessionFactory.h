@@ -55,24 +55,28 @@ public:
 
   ~SessionFactory();
 
+  /// @throws ConfigError
   Session* create( const SessionID& sessionID,
-                   const Dictionary& settings ) EXCEPT ( ConfigError );
+                   const Dictionary& settings );
   void destroy( Session* pSession );
 
 private:
   typedef std::map < std::string, ptr::shared_ptr<DataDictionary> > Dictionaries;
 
+  /// @throws ConfigError
   ptr::shared_ptr<DataDictionary> createDataDictionary(const SessionID& sessionID, 
                                                        const Dictionary& settings, 
-                                                       const std::string& settingsKey) EXCEPT (ConfigError);
+                                                       const std::string& settingsKey);
 
+  /// @throws ConfigError
   void processFixtDataDictionaries(const SessionID& sessionID, 
                                    const Dictionary& settings, 
-                                   DataDictionaryProvider& provider) EXCEPT (ConfigError);
+                                   DataDictionaryProvider& provider);
 
+  /// @throws ConfigError
   void processFixDataDictionary(const SessionID& sessionID, 
                                 const Dictionary& settings, 
-                                DataDictionaryProvider& provider) EXCEPT (ConfigError);
+                                DataDictionaryProvider& provider);
 
   std::string toApplVerID(const std::string& value);
 

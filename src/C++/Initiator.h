@@ -51,19 +51,33 @@ class Client;
 class Initiator
 {
 public:
+  /// @throws ConfigError
   Initiator( Application&, MessageStoreFactory&,
-             const SessionSettings& ) EXCEPT ( ConfigError );
+             const SessionSettings& );
+  /// @throws ConfigError
   Initiator( Application&, MessageStoreFactory&,
-             const SessionSettings&, LogFactory& ) EXCEPT ( ConfigError );
+             const SessionSettings&, LogFactory& );
 
   virtual ~Initiator();
 
-  /// Start initiator.
-  void start() EXCEPT ( ConfigError, RuntimeError );
-  /// Block on the initiator
-  void block() EXCEPT ( ConfigError, RuntimeError );
-  /// Poll the initiator
-  bool poll( double timeout = 0.0 ) EXCEPT ( ConfigError, RuntimeError );
+  /**
+   * Start initiator
+   *
+   * @throws ConfigError, RuntimeError
+   */
+  void start();
+  /**
+   * Block on the initiator
+   *
+   * @throws ConfigError, RuntimeError
+   */
+  void block();
+  /**
+   * Poll the initiator
+   *
+   * @throws ConfigError, RuntimeError
+   */
+  bool poll( double timeout = 0.0 );
 
   /// Stop initiator.
   void stop( bool force = false );
@@ -104,12 +118,21 @@ protected:
   void connect();
 
 private:
-  void initialize() EXCEPT ( ConfigError );
+  /// @throws ConfigError
+  void initialize();
 
-  /// Implemented to configure acceptor
-  virtual void onConfigure( const SessionSettings& ) EXCEPT ( ConfigError ) {};
-  /// Implemented to initialize initiator
-  virtual void onInitialize( const SessionSettings& ) EXCEPT ( RuntimeError ) {};
+  /*
+   * Implemented to configure acceptor
+   * 
+   * @throws ConfigError
+   */
+  virtual void onConfigure( const SessionSettings& ) {};
+  /**
+   * Implemented to initialize initiator
+   *
+   * @throws RuntimeError
+   */
+  virtual void onInitialize( const SessionSettings& ) {};
   /// Implemented to start connecting to targets.
   virtual void onStart() = 0;
   /// Implemented to connect and poll for events.

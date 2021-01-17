@@ -35,7 +35,6 @@ int HttpServer::s_count = 0;
 HttpServer* HttpServer::s_pServer = 0;
 
 void HttpServer::startGlobal( const SessionSettings& s ) 
-EXCEPT ( ConfigError, RuntimeError )
 {
   Locker l( s_mutex );
 
@@ -63,17 +62,15 @@ void HttpServer::stopGlobal()
   }  
 }
 
-HttpServer::HttpServer( const SessionSettings& settings ) EXCEPT ( ConfigError )
+HttpServer::HttpServer( const SessionSettings& settings )
 : m_pServer( 0 ), m_settings( settings ), m_threadid( 0 ), m_port( 0 ), m_stop( false ) {}
 
 void HttpServer::onConfigure( const SessionSettings& s )
-EXCEPT ( ConfigError )
 {  
   m_port = s.get().getInt( HTTP_ACCEPT_PORT );
 }
 
 void HttpServer::onInitialize( const SessionSettings& s )
-EXCEPT ( RuntimeError )
 {
   try
   {
@@ -86,7 +83,7 @@ EXCEPT ( RuntimeError )
   }
 }
 
-void HttpServer::start() EXCEPT ( ConfigError, RuntimeError )
+void HttpServer::start()
 {
   m_stop = false;
   onConfigure( m_settings );

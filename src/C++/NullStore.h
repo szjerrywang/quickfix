@@ -60,33 +60,45 @@ class NullStore : public MessageStore
 public:
   NullStore() : m_nextSenderMsgSeqNum( 1 ), m_nextTargetMsgSeqNum( 1 ) {}
 
-  bool set( int, const std::string& ) EXCEPT ( IOException );
-  void get( int, int, std::vector < std::string > & ) const EXCEPT ( IOException );
+  /// @throws IOException
+  bool set( int, const std::string& );
+  /// @throws IOException
+  void get( int, int, std::vector < std::string > & ) const;
 
-  int getNextSenderMsgSeqNum() const EXCEPT ( IOException )
+  /// @throws IOException
+  int getNextSenderMsgSeqNum() const
   { return m_nextSenderMsgSeqNum; }
-  int getNextTargetMsgSeqNum() const EXCEPT ( IOException )
+  /// @throws IOException
+  int getNextTargetMsgSeqNum() const
   { return m_nextTargetMsgSeqNum; }
-  void setNextSenderMsgSeqNum( int value ) EXCEPT ( IOException )
+  /// @throws IOException
+  void setNextSenderMsgSeqNum( int value )
   { m_nextSenderMsgSeqNum = value; }
-  void setNextTargetMsgSeqNum( int value ) EXCEPT ( IOException )
+  /// @throws IOException
+  void setNextTargetMsgSeqNum( int value )
   { m_nextTargetMsgSeqNum = value; }
-  void incrNextSenderMsgSeqNum() EXCEPT ( IOException )
+  /// @throws IOException
+  void incrNextSenderMsgSeqNum()
   { ++m_nextSenderMsgSeqNum; }
-  void incrNextTargetMsgSeqNum() EXCEPT ( IOException )
+  /// @throws IOException
+  void incrNextTargetMsgSeqNum()
   { ++m_nextTargetMsgSeqNum; }
 
-  void setCreationTime( const UtcTimeStamp& creationTime ) EXCEPT ( IOException )
+  /// @throws IOException
+  void setCreationTime( const UtcTimeStamp& creationTime )
   { m_creationTime = creationTime; }
-  UtcTimeStamp getCreationTime() const EXCEPT ( IOException )
+  /// @throws IOException
+  UtcTimeStamp getCreationTime() const
   { return m_creationTime; }
 
-  void reset() EXCEPT ( IOException )
+  /// @throws IOException
+  void reset()
   {
     m_nextSenderMsgSeqNum = 1; m_nextTargetMsgSeqNum = 1;
     m_creationTime.setCurrent();
   }
-  void refresh() EXCEPT ( IOException ) {}
+  /// @throws IOException
+  void refresh() {}
 
 private:
   int m_nextSenderMsgSeqNum;

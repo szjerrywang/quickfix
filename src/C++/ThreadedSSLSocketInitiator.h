@@ -136,11 +136,13 @@ namespace FIX
 class ThreadedSSLSocketInitiator : public Initiator
 {
 public:
+  /// @throws ConfigError
   ThreadedSSLSocketInitiator(Application &, MessageStoreFactory &,
-                             const SessionSettings &) EXCEPT (ConfigError);
+                             const SessionSettings &);
+  /// @throws ConfigError
   ThreadedSSLSocketInitiator(Application &, MessageStoreFactory &,
                              const SessionSettings &,
-                             LogFactory &) EXCEPT (ConfigError);
+                             LogFactory &);
 
   virtual ~ThreadedSSLSocketInitiator();
 
@@ -163,8 +165,10 @@ private:
   typedef std::pair< ThreadedSSLSocketInitiator *,
                      ThreadedSSLSocketConnection * > ThreadPair;
 
-  void onConfigure(const SessionSettings &) EXCEPT (ConfigError);
-  void onInitialize(const SessionSettings &) EXCEPT (RuntimeError);
+  /// @throws ConfigError
+  void onConfigure(const SessionSettings &);
+  /// @throws RuntimeError
+  void onInitialize(const SessionSettings &);
 
   void onStart();
   bool onPoll(double timeout);

@@ -36,10 +36,12 @@ namespace FIX
 class SocketInitiator : public Initiator, SocketConnector::Strategy
 {
 public:
+  /// @throws ConfigError
   SocketInitiator( Application&, MessageStoreFactory&,
-                   const SessionSettings& ) EXCEPT ( ConfigError );
+                   const SessionSettings& );
+  /// @throws ConfigError
   SocketInitiator( Application&, MessageStoreFactory&,
-                   const SessionSettings&, LogFactory& ) EXCEPT ( ConfigError );
+                   const SessionSettings&, LogFactory& );
 
   virtual ~SocketInitiator();
 
@@ -47,8 +49,10 @@ private:
   typedef std::map < socket_handle, SocketConnection* > SocketConnections;
   typedef std::map < SessionID, int > SessionToHostNum;
 
-  void onConfigure( const SessionSettings& ) EXCEPT ( ConfigError );
-  void onInitialize( const SessionSettings& ) EXCEPT ( RuntimeError );
+  /// @throws ConfigError
+  void onConfigure( const SessionSettings& );
+  /// @throws RuntimeError
+  void onInitialize( const SessionSettings& );
 
   void onStart();
   bool onPoll( double timeout );
