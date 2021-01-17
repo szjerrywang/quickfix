@@ -10142,7 +10142,7 @@ namespace pugi
 		assert(_result.error);
 	}
 	
-        PUGI__FN const char* xpath_exception::what() const _NOEXCEPT
+        PUGI__FN const char* xpath_exception::what() const throw()
 	{
 		return _result.error;
 	}
