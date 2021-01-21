@@ -1,3 +1,4 @@
+project(quickfix)
 set(quickfix_VERSION_MAJOR 16)
 set(quickfix_VERSION_MINOR 0)
 set(quickfix_VERSION_PATCH 1)
@@ -72,11 +73,14 @@ else()
 endif()
 
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR} ${CMAKE_SOURCE_DIR}/src ${CMAKE_SOURCE_DIR}/src/C++)
+target_include_directories(${PROJECT_NAME} PUBLIC $<INSTALL_INTERFACE:include>)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES VERSION ${quickfix_VERSION} SOVERSION ${quickfix_VERSION_MAJOR} )
+# target_compile_definitions(${PROJECT_NAME} PUBLIC HAVE_STD_UNIQUE_PTR HAVE_STD_SHARED_PTR HAVE_SSL=1)
 
-install(TARGETS ${PROJECT_NAME} DESTINATION lib)
+install(TARGETS ${PROJECT_NAME} EXPORT quickfix-config DESTINATION lib)
 install(DIRECTORY ${CMAKE_SOURCE_DIR}/src/C++/ DESTINATION include/quickfix
         FILES_MATCHING PATTERN "*.h"
         PATTERN double-conversion EXCLUDE
         PATTERN test EXCLUDE)
+install(EXPORT quickfix-config DESTINATION share/cmake/quickfix)
